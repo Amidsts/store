@@ -13,6 +13,8 @@ const appConfig = {
     jwtSecret: env.JWT_SECRET || "",
     tokenLifeSpan: ms("1days"),
   },
+  paystackSecret: env.PAYSTACK_SECRET,
+  paystackPublicKey: env.PAYSTACK_PUBLIC_KEY,
 };
 
 export default appConfig;
