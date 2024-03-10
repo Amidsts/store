@@ -46,7 +46,7 @@ async function resetPassword(req: IRequest, res: Response) {
 
     const otp = await OtpModel.findOne({
       User: existingUser._id,
-      purpose: "reset-password",
+      purpose: "reset_password",
       code,
       isVerified: true,
     }).session(session);

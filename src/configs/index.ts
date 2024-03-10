@@ -15,6 +15,9 @@ const appConfig = {
   },
   paystackSecret: env.PAYSTACK_SECRET,
   paystackPublicKey: env.PAYSTACK_PUBLIC_KEY,
+  mailgunApiKey: env.MAILGUN_API_KEY,
+  mailgunDomain: env.MAILGUN_DOMAIN,
+  appEmail: env.APP_EMAIL,
 };
 
 export default appConfig;

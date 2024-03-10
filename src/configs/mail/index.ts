@@ -41,4 +41,4 @@ async function emailConfig({
   }
 }
 
-export default sendMail;
+export default emailConfig;

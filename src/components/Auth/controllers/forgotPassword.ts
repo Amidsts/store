@@ -38,7 +38,7 @@ async function forgotPassword(req: IRequest, res: Response) {
       User: existingUser._id,
       code: verificationCode,
       expireAt: new Date(Date.now() + 1000 * 60 * 30),
-      purpose: "reset-password",
+      purpose: "reset_password",
       isVerified: false,
     }).save();
 

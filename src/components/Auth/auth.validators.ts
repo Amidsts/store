@@ -35,7 +35,7 @@ export const resetPasswordSchema = z
   });
 
   export const verifyOtpSchema = z.object({
-    code: z.string().refine((value) => value.length === 4),
+    code: z.string().refine((value) => value.length === 6),
     email: z.string().email(),
     otpPurpose: z.string()
   });

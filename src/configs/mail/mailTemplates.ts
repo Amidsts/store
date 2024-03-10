@@ -25,7 +25,7 @@ const sendEmail = (purpose: string) => {
         })
     };
 
-    return template["forgotPasswordEmail"]()
+    // return template["forgotPasswordEmail"]()
 }
 
 

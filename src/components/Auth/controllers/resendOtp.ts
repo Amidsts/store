@@ -44,9 +44,6 @@ async function resendOtp(req: IRequest, res: Response) {
     return responseHandler({
       res,
       message: "verification code has been sent to your mail",
-      data: {
-        accountVerificationComplete: false,
-      },
     });
   } catch (err) {
     return responseHandler({

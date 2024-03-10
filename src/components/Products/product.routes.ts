@@ -29,7 +29,7 @@ router.delete(
   deleteProduct
 );
 
-router.patch(
+router.put(
   "/",
   validateInput(editProductSchema),
   validateToken,
