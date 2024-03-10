@@ -11,7 +11,7 @@ async function createProduct(req: IRequest, res: Response) {
     category,
     description,
     price,
-    quantity,
+    quantityInStock,
   }: z.infer<typeof createProductSchema> = req.body;
 
   const { user } = req;
@@ -36,7 +36,7 @@ async function createProduct(req: IRequest, res: Response) {
       category,
       description,
       price,
-      quantity,
+      quantityInStock,
     }).save();
 
     return responseHandler({

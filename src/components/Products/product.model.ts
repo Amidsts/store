@@ -6,7 +6,7 @@ interface IProduct extends Document {
   category: string;
   description: string;
   price: number;
-  quantity: number;
+  quantityInStock: number;
 }
 
 const productSchema = new Schema<IProduct>({
@@ -24,7 +24,7 @@ const productSchema = new Schema<IProduct>({
     type: Number,
     required: true,
   },
-  quantity: {
+  quantityInStock: {
     type: Number,
     required: true,
   },

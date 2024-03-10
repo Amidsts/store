@@ -5,7 +5,7 @@ export const createProductSchema = z.object({
   category: z.string(),
   description: z.string(),
   price: z.number(),
-  quantity: z.number(),
+  quantityInStock: z.number(),
 });
 
 export const deleteProductSchema = z.object({
@@ -18,7 +18,7 @@ export const editProductSchema = z.object({
   category: z.string(),
   description: z.string(),
   price: z.number(),
-  quantity: z.number(),
+  quantityInStock: z.number(),
 });
 
 export const searchProductSchema = z.object({

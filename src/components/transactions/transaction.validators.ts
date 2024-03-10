@@ -1,8 +1,8 @@
 import z from "zod";
 
-export const initiateOrderSchema = z.object({
+export const initiatePaymentSchema = z.object({
   idempotencyKey: z.string().optional(),
   productId: z.string(),
-  currency: z.string(),
-  quantity: z.number().default(1),
+  currency: z.enum(["NGN", "USD"]),
+  quantity: z.number().default(1).optional(),
 });

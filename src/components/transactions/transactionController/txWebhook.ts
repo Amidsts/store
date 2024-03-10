@@ -20,6 +20,7 @@ async function txWebhookHandler(req: IRequest, res: Response) {
 
     console.log(`Paystack event  ${event}`);
     res.send(200);
+
   } catch (err) {
     responseHandler({
       res,

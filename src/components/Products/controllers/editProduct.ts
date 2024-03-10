@@ -12,7 +12,7 @@ async function editProduct(req: IRequest, res: Response) {
     category,
     description,
     price,
-    quantity,
+    quantityInStock,
   }: z.infer<typeof editProductSchema> = req.body;
 
   const { user } = req;
@@ -45,7 +45,7 @@ async function editProduct(req: IRequest, res: Response) {
     product.category = category;
     product.description = description;
     product.price = price;
-    product.quantity = quantity;
+    product.quantityInStock = quantityInStock;
 
     await product.save();
     return responseHandler({
