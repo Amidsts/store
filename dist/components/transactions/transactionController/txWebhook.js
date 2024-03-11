@@ -31,7 +31,7 @@ function txWebhookHandler(req, res) {
                     return res.status(200).json({ message: "Transfer successful" });
                 }
             }
-            res.status(200).send("200");
+            res.status(200).send(200);
         }
         catch (err) {
             (0, response_1.responseHandler)({

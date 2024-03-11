@@ -11,6 +11,10 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    fullName: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
@@ -18,7 +22,7 @@ const userSchema = new mongoose_1.Schema({
     phoneNo: {
         type: String,
         required: true,
-    }
+    },
 }, { timestamps: true });
 const UserModel = (0, mongoose_1.model)("User", userSchema);
 exports.default = UserModel;

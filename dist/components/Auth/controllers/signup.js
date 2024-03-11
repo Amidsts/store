@@ -36,6 +36,7 @@ function signUp(req, res) {
             const newUser = yield new user_model_1.default({
                 firstName,
                 lastName,
+                fullName: `${firstName} ${lastName}`,
                 phoneNo,
                 email,
             }).save({ session });

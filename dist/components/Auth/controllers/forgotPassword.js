@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("../../../utils/response");
 const user_model_1 = __importStar(require("../../Users/user.model"));
 const auth_model_1 = __importDefault(require("../auth.model"));
+const mailTemplates_1 = __importDefault(require("../../../configs/mail/mailTemplates"));
 function forgotPassword(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { email } = req.body;
@@ -68,12 +69,7 @@ function forgotPassword(req, res) {
                 purpose: "reset_password",
                 isVerified: false,
             }).save();
-            // await sendForgotPasswordEmail(
-            //   existingUser.email,
-            //   existingUser.firstName,
-            //   verificationCode
-            // );
-            // await sendEmail("forgotPasswordEmail")[]
+            yield (0, mailTemplates_1.default)("forgotPasswordEmail", existingUser.email, existingUser.fullName, verificationCode);
             console.log("verification code:  ", verificationCode);
             return (0, response_1.responseHandler)({
                 res,

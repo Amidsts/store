@@ -13,13 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = __importDefault(require("."));
-const sendEmail = (purpose) => {
-    const template = {
-        forgotPasswordEmail: (to, userName, code) => __awaiter(void 0, void 0, void 0, function* () {
-            return yield (0, _1.default)({
-                to,
-                subject: "Forgot Your Password ?",
-                html: `
+const templates = {
+    forgotPasswordEmail: (to, userName, code) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield (0, _1.default)({
+            to,
+            subject: "Forgot Your Password ?",
+            html: `
             <html>
                 <head>
                 </head>
@@ -31,10 +30,18 @@ const sendEmail = (purpose) => {
                 </body>
             </html>
         `,
-            });
-        })
-    };
-    // return template["forgotPasswordEmail"]()
+        });
+    }),
 };
+const sendEmail = (purpose, to, userName, code) => __awaiter(void 0, void 0, void 0, function* () {
+    switch (purpose) {
+        case "forgotPasswordEmail":
+            yield templates.forgotPasswordEmail(to, userName, code);
+            break;
+        default:
+            break;
+    }
+    return;
+});
 exports.default = sendEmail;
 //# sourceMappingURL=mailTemplates.js.map
