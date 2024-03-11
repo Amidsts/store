@@ -1,6 +1,8 @@
 @server = http://127.0.0.1:3030
+
+# @server = https://store-vifn.onrender.com
 @api = {{server}}/v1
-@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWYiOiI2NWVkYzU0MGI5NDIzNzBkZjU0NWVmNTYiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDA4MjAzMiwiZXhwIjoxNzk2NDgyMDMyLCJhdWQiOiJ3ZWItdXNlciIsImlzcyI6InN0b3JlLWRldmVsb3BtZW50In0.xNu3faHR_3nGJqk5j63ILgGQtFpewQBSpcaiNWJ2lDg
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWYiOiI2NWVlYTAxNDU2NDIwOTdjOTAzZGYyYWEiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDEzNzM4MSwiZXhwIjoxNzk2NTM3MzgxLCJhdWQiOiJ3ZWItdXNlciIsImlzcyI6InN0b3JlLWRldmVsb3BtZW50In0.hh307CrVpyjkoynV0Mdbp7b1WPXPjZRN3rMfTf2Ipyk
 
 ###
 GET {{server}}
@@ -12,9 +14,9 @@ POST {{api}}/auth/signup
 Content-Type: application/json
 
 {
-    "firstName": "Johssafn",
+    "firstName": "Jolhoafn",
     "lastName": "Daorea",
-    "email": "zuydudedri@gufum.com",
+    "email": "zuydudedr@gmail.com",
     "password": "passirdhs",
     "phoneNo": "09066541174"
 }
@@ -24,8 +26,8 @@ POST {{api}}/auth/signin
 Content-Type: application/json
 
 {
-    "email": "zuydudedri@gufum.com",
-    "password": "password2"
+    "email": "zuydudedr@gmail.com",
+    "password": "passirdhs"
 }
 
 ### forgot password
@@ -74,11 +76,11 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "hamdwu",
+    "name": "haaiou",
     "category": "accessories",
-    "description": "hh wyksf jsfg",
-    "price": 20.79,
-    "quantityInStock": 2,
+    "description": "hh wjsf dmhaie, ssg",
+    "price": 100.79,
+    "quantityInStock": 40
 
 }
 
@@ -88,23 +90,22 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "productId": "",
+    "productId": "65edd0dd9d83584a19a8f8e7",
     "name": "hamdwu",
     "category": "accessories",
     "description": "hh wyksf jsfg",
     "price": 20.79,
-    "quantityInStock": 2,
+    "quantityInStock": 1
     
 }
 
 ### delete product
-DELETE {{api}}/product
+DELETE {{api}}/product/65edd0dd9d83584a19a8f8e7
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### search product
-GET {{api}}/product
-Content-Type: application/json
+GET {{api}}/product?productId=65edd1eabad46656e6f2750a
 Authorization: Bearer {{token}}
 
 
@@ -116,8 +117,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "idempotencyKey": "143uhvg24iwl",
-    "productId": "",
-    "currency": "USD",
+    "idempotencyKey": "143uhvgwiy2amgf24iwl",
+    "productId": "65edd1eabad46656e6f2750a",
+    "currency": "NGN",
     "quantity": 2
 }

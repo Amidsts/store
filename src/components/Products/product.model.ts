@@ -10,7 +10,7 @@ interface IProduct extends Document {
 }
 
 const productSchema = new Schema<IProduct>({
-  User: Schema.Types.ObjectId,
+  User: {type: Schema.Types.ObjectId, ref: "User"},
   name: { type: String, required: true },
   category: {
     type: String,
@@ -28,13 +28,8 @@ const productSchema = new Schema<IProduct>({
     type: Number,
     required: true,
   },
-});
+}, {timestamps: true});
 
-productSchema.index({
-  productName: "text",
-  category: "text",
-  description: "text",
-});
 
 const ProductModel = model<IProduct>("Product", productSchema)
 export default ProductModel

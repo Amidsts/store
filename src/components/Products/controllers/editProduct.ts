@@ -17,6 +17,7 @@ async function editProduct(req: IRequest, res: Response) {
 
   const { user } = req;
   try {
+
     const product = await ProductModel.findOne({
       _id: productId,
       User: user._id,

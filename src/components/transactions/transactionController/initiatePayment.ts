@@ -58,11 +58,12 @@ async function initiatePayment(req: IRequest, res: Response) {
 
     const amount = Currency(product.price).multiply(quantity).value;
 
-    const payload = JSON.stringify({
-      currency,
-      amount,
+    const payload = {
       email: user.email,
-    });
+      amount: `${amount}`,
+      currency
+
+    };
 
     const { data } = await axios.post(
       "https://api.paystack.co/transaction/initialize",
@@ -106,5 +107,4 @@ async function initiatePayment(req: IRequest, res: Response) {
   }
 }
 
-
-export default initiatePayment
+export default initiatePayment;

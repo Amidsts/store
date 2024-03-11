@@ -22,6 +22,6 @@ export const editProductSchema = z.object({
 });
 
 export const searchProductSchema = z.object({
-  id: z.string().optional(),
+  productId: z.string().optional(),
   search: z.string().optional(),
 });

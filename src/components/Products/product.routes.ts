@@ -4,12 +4,14 @@ import {
   createProductSchema,
   deleteProductSchema,
   editProductSchema,
+  searchProductSchema,
 } from "./product.validators";
 import validateToken from "../../middlewares/tokenValidator";
 import requireAuth from "../../middlewares/requireAuth";
 import createProduct from "./controllers/createProduct";
 import deleteProduct from "./controllers/deleteProduct";
 import editProduct from "./controllers/editProduct";
+import searchProduct from "./controllers/searchProduct";
 
 const router = Router();
 
@@ -22,8 +24,8 @@ router.post(
 );
 
 router.delete(
-  "/",
-  validateInput(deleteProductSchema),
+  "/:productId",
+  validateInput(deleteProductSchema, "params"),
   validateToken,
   requireAuth,
   deleteProduct
@@ -39,11 +41,12 @@ router.put(
 
 router.get(
   "/",
-  validateInput(editProductSchema),
+  validateInput(searchProductSchema, "query"),
   validateToken,
   requireAuth,
-  editProduct
+  searchProduct
 );
+
 
 const productRouter = router;
 export default productRouter;

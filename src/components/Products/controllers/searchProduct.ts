@@ -7,26 +7,12 @@ import handlePaginate from "../../../utils/paginate";
 import { searchProductSchema } from "../product.validators";
 
 async function searchProduct(req: IRequest, res: Response) {
-  const { id, search }: z.infer<typeof searchProductSchema> = req.query;
-  const { user: currentUser } = req;
+  const { productId, search }: z.infer<typeof searchProductSchema> = req.query;
 
   const { paginationOptions, meta } = handlePaginate(req);
   try {
-    if (!req.query) {
-      const products = await ProductModel.find({}, null, paginationOptions);
-
-      return responseHandler({
-        res,
-        message: "products retrieved successfully",
-        data: {
-          products,
-          meta,
-        },
-      });
-    }
-
-    if (id) {
-      const product = await ProductModel.findById(id);
+    if (productId) {
+      const product = await ProductModel.findById(productId);
       if (!product) {
         return responseHandler({
           res,
@@ -42,13 +28,26 @@ async function searchProduct(req: IRequest, res: Response) {
       });
     }
 
-    const products = await ProductModel.find(
-      {
-        $text: { $search: search as string },
-      },
-      null,
-      paginationOptions
-    );
+    if (search) {
+      const products = await ProductModel.find(
+        {
+          name: { $regex: search, $options: "i" },
+        },
+        null,
+        paginationOptions
+      );
+
+      return responseHandler({
+        res,
+        message: "products retrieved successfully",
+        data: {
+          products,
+          meta,
+        },
+      });
+    }
+
+    const products = await ProductModel.find({}, null, paginationOptions);
 
     return responseHandler({
       res,
