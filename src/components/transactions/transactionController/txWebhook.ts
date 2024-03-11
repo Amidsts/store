@@ -25,7 +25,7 @@ async function txWebhookHandler(req: IRequest, res: Response) {
     }
 
     
-    res.send(200);
+    res.status(200).send("200");
 
   } catch (err) {
     responseHandler({

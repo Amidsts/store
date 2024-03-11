@@ -14,7 +14,7 @@ router.post(
   requireAuth,
   initiatePayment
 );
-router.post("/webhook", txWebhookHandler);
+router.get("/webhook", txWebhookHandler);
 
 const txRouter = router;
 export default txRouter;
