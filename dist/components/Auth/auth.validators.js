@@ -35,7 +35,7 @@ exports.resendOtpSchema = zod_1.default.object({
     otpPurpose: zod_1.default.string()
 });
 exports.verifyOtpSchema = zod_1.default.object({
-    code: zod_1.default.string().refine((value) => value.length === 4),
+    code: zod_1.default.string().refine((value) => value.length === 6),
     email: zod_1.default.string().email(),
     otpPurpose: zod_1.default.string()
 });

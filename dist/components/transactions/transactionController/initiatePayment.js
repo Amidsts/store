@@ -55,11 +55,11 @@ function initiatePayment(req, res) {
                     status: 400,
                 });
             const amount = (0, currency_js_1.default)(product.price).multiply(quantity).value;
-            const payload = JSON.stringify({
-                currency,
-                amount,
+            const payload = {
                 email: user.email,
-            });
+                amount: `${amount}`,
+                currency
+            };
             const { data } = yield axios_1.default.post("https://api.paystack.co/transaction/initialize", payload, {
                 headers: {
                     Authorization: `Bearer ${paystackSecret}`,

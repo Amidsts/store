@@ -21,7 +21,7 @@ exports.editProductSchema = zod_1.z.object({
     quantityInStock: zod_1.z.number(),
 });
 exports.searchProductSchema = zod_1.z.object({
-    id: zod_1.z.string().optional(),
+    productId: zod_1.z.string().optional(),
     search: zod_1.z.string().optional(),
 });
 //# sourceMappingURL=product.validators.js.map

@@ -17,23 +17,11 @@ const product_model_1 = __importDefault(require("../product.model"));
 const paginate_1 = __importDefault(require("../../../utils/paginate"));
 function searchProduct(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { id, search } = req.query;
-        const { user: currentUser } = req;
+        const { productId, search } = req.query;
         const { paginationOptions, meta } = (0, paginate_1.default)(req);
         try {
-            if (!req.query) {
-                const products = yield product_model_1.default.find({}, null, paginationOptions);
-                return (0, response_1.responseHandler)({
-                    res,
-                    message: "products retrieved successfully",
-                    data: {
-                        products,
-                        meta,
-                    },
-                });
-            }
-            if (id) {
-                const product = yield product_model_1.default.findById(id);
+            if (productId) {
+                const product = yield product_model_1.default.findById(productId);
                 if (!product) {
                     return (0, response_1.responseHandler)({
                         res,
@@ -47,9 +35,20 @@ function searchProduct(req, res) {
                     data: product,
                 });
             }
-            const products = yield product_model_1.default.find({
-                $text: { $search: search },
-            }, null, paginationOptions);
+            if (search) {
+                const products = yield product_model_1.default.find({
+                    name: { $regex: search, $options: "i" },
+                }, null, paginationOptions);
+                return (0, response_1.responseHandler)({
+                    res,
+                    message: "products retrieved successfully",
+                    data: {
+                        products,
+                        meta,
+                    },
+                });
+            }
+            const products = yield product_model_1.default.find({}, null, paginationOptions);
             return (0, response_1.responseHandler)({
                 res,
                 message: "products retrieved successfully",

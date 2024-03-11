@@ -70,9 +70,6 @@ function resendOtp(req, res) {
             return (0, response_1.responseHandler)({
                 res,
                 message: "verification code has been sent to your mail",
-                data: {
-                    accountVerificationComplete: false,
-                },
             });
         }
         catch (err) {

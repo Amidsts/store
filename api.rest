@@ -122,3 +122,6 @@ Authorization: Bearer {{token}}
     "currency": "NGN",
     "quantity": 2
 }
+
+###
+GET {{api}}/tx/webhook
