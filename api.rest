@@ -1,6 +1,6 @@
-# @server = http://127.0.0.1:3030
+@server = http://127.0.0.1:3030
 
-@server = https://store-vifn.onrender.com
+# @server = https://store-vifn.onrender.com
 @api = {{server}}/v1
 @token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWYiOiI2NWVlYTAxNDU2NDIwOTdjOTAzZGYyYWEiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDEzNzM4MSwiZXhwIjoxNzk2NTM3MzgxLCJhdWQiOiJ3ZWItdXNlciIsImlzcyI6InN0b3JlLWRldmVsb3BtZW50In0.hh307CrVpyjkoynV0Mdbp7b1WPXPjZRN3rMfTf2Ipyk
 
@@ -14,9 +14,9 @@ POST {{api}}/auth/signup
 Content-Type: application/json
 
 {
-    "firstName": "Jolhoafn",
-    "lastName": "Daorea",
-    "email": "zuydudedr@gmail.com",
+    "firstName": "John",
+    "lastName": "Daoa",
+    "email": "wajix25578@fashlend.com",
     "password": "passirdhs",
     "phoneNo": "09066541174"
 }
@@ -35,7 +35,7 @@ POST {{api}}/auth/forgot-password
 Content-Type: application/json
 
 {
-    "email": "zuydudedri@gufum.com"
+    "email": "wajix25578@fashlend.com"
 }
 
 ### verify otp
@@ -53,7 +53,7 @@ POST {{api}}/auth/resend-otp
 Content-Type: application/json
 
 {
-    "email": "zuydudedri@gufum.com",
+    "email": "wajix25578@fashlend.com",
     "otpPurpose": "reset_password"
 }
 
@@ -122,6 +122,3 @@ Authorization: Bearer {{token}}
     "currency": "NGN",
     "quantity": 2
 }
-
-###
-GET {{api}}/tx/webhook

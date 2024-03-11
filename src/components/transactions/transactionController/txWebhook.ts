@@ -8,7 +8,7 @@ import appConfig from "../../../configs";
 const { paystackSecret } = appConfig;
 
 async function txWebhookHandler(req: IRequest, res: Response) {
-  console.log("webhook")
+
   try {
     const hash = crypto
       .createHmac("sha512", paystackSecret)
@@ -17,15 +17,12 @@ async function txWebhookHandler(req: IRequest, res: Response) {
     if (hash == req.headers["x-paystack-signature"]) {
       const { event } = req.body;
 
-      console.log(`Paystack event  ${event}`);
+      console.log(`Paystack event  ${req.body}`);
 
-      if (event === "transfer.success") {
-        return res.status(200).json({ message: "Transfer successful" });
-      } 
+      res.sendStatus(200).send(200);
     }
-
     
-    res.status(200).send(200);
+    
 
   } catch (err) {
     responseHandler({

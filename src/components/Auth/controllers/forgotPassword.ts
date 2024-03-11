@@ -44,7 +44,6 @@ async function forgotPassword(req: IRequest, res: Response) {
 
 
     await sendEmail("forgotPasswordEmail", existingUser.email,existingUser.fullName, verificationCode );
-    console.log("verification code:  ", verificationCode)
 
     return responseHandler({
       res,

@@ -70,7 +70,6 @@ function forgotPassword(req, res) {
                 isVerified: false,
             }).save();
             yield (0, mailTemplates_1.default)("forgotPasswordEmail", existingUser.email, existingUser.fullName, verificationCode);
-            console.log("verification code:  ", verificationCode);
             return (0, response_1.responseHandler)({
                 res,
                 message: "verification code has been sent to your mail",

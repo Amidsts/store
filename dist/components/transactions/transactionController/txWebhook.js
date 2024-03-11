@@ -18,7 +18,6 @@ const configs_1 = __importDefault(require("../../../configs"));
 const { paystackSecret } = configs_1.default;
 function txWebhookHandler(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("webhook");
         try {
             const hash = node_crypto_1.default
                 .createHmac("sha512", paystackSecret)
@@ -26,12 +25,9 @@ function txWebhookHandler(req, res) {
                 .digest("hex");
             if (hash == req.headers["x-paystack-signature"]) {
                 const { event } = req.body;
-                console.log(`Paystack event  ${event}`);
-                if (event === "transfer.success") {
-                    return res.status(200).json({ message: "Transfer successful" });
-                }
+                console.log(`Paystack event  ${req.body}`);
+                res.sendStatus(200).send(200);
             }
-            res.status(200).send(200);
         }
         catch (err) {
             (0, response_1.responseHandler)({

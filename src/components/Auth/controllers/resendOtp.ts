@@ -6,6 +6,7 @@ import { responseHandler } from "../../../utils/response";
 import { resendOtpSchema } from "../auth.validators";
 import UserModel, { OtpModel } from "../../Users/user.model";
 import AuthModel from "../auth.model";
+import sendEmail from "../../../configs/mail/mailTemplates";
 
 async function resendOtp(req: IRequest, res: Response) {
   const { email, otpPurpose }: z.infer<typeof resendOtpSchema> = req.body;
@@ -37,9 +38,12 @@ async function resendOtp(req: IRequest, res: Response) {
       purpose: otpPurpose,
     }).save();
 
-    //send a mail
-    console.log("user verification:  ", verificationCode);
-    
+    await sendEmail(
+      "forgotPasswordEmail",
+      user.email,
+      user.fullName,
+      verificationCode
+    );
 
     return responseHandler({
       res,

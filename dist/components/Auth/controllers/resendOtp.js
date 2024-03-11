@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("../../../utils/response");
 const user_model_1 = __importStar(require("../../Users/user.model"));
 const auth_model_1 = __importDefault(require("../auth.model"));
+const mailTemplates_1 = __importDefault(require("../../../configs/mail/mailTemplates"));
 function resendOtp(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { email, otpPurpose } = req.body;
@@ -65,8 +66,7 @@ function resendOtp(req, res) {
                 expireAt: new Date(Date.now() + 1000 * 60 * 30),
                 purpose: otpPurpose,
             }).save();
-            //send a mail
-            console.log("user verification:  ", verificationCode);
+            yield (0, mailTemplates_1.default)("forgotPasswordEmail", user.email, user.fullName, verificationCode);
             return (0, response_1.responseHandler)({
                 res,
                 message: "verification code has been sent to your mail",

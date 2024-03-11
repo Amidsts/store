@@ -55,10 +55,18 @@ function initiatePayment(req, res) {
                     status: 400,
                 });
             const amount = (0, currency_js_1.default)(product.price).multiply(quantity).value;
+            //create customer
+            const customer = yield axios_1.default.post("https://api.paystack.co/customer", {
+                email: user.email,
+                first_name: user.firstName,
+                last_name: user.lastName,
+                phone: user.phoneNo,
+            });
+            console.log("customer data ", customer.data);
             const payload = {
                 email: user.email,
                 amount: `${amount}`,
-                currency
+                currency,
             };
             const { data } = yield axios_1.default.post("https://api.paystack.co/transaction/initialize", payload, {
                 headers: {
