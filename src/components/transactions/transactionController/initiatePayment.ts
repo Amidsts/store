@@ -59,15 +59,24 @@ async function initiatePayment(req: IRequest, res: Response) {
     const amount = Currency(product.price).multiply(quantity).value;
 
     //create customer
-    const customer = await axios.post("https://api.paystack.co/customer", {
-      email: user.email,
-      first_name: user.firstName,
-      last_name: user.lastName,
-      phone: user.phoneNo,
-    });
+    const customer = await axios.post(
+      "https://api.paystack.co/customer",
+      {
+        email: user.email,
+        first_name: user.firstName,
+        last_name: user.lastName,
+        phone: user.phoneNo,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${paystackSecret}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log("customer data ", customer.data)
-    
+
     const payload = {
       email: user.email,
       amount: `${amount}`,

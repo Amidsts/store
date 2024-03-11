@@ -1,6 +1,6 @@
-@server = http://127.0.0.1:3030
+# @server = http://127.0.0.1:3030
 
-# @server = https://store-vifn.onrender.com
+@server = https://store-vifn.onrender.com
 @api = {{server}}/v1
 @token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWYiOiI2NWVlYTAxNDU2NDIwOTdjOTAzZGYyYWEiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDEzNzM4MSwiZXhwIjoxNzk2NTM3MzgxLCJhdWQiOiJ3ZWItdXNlciIsImlzcyI6InN0b3JlLWRldmVsb3BtZW50In0.hh307CrVpyjkoynV0Mdbp7b1WPXPjZRN3rMfTf2Ipyk
 
