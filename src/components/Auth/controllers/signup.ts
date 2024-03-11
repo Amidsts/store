@@ -40,6 +40,7 @@ async function signUp(req: IRequest, res: Response) {
     const newUser = await new UserModel({
       firstName,
       lastName,
+      fullName: `${firstName} ${lastName}`,
       phoneNo,
       email,
     }).save({ session });

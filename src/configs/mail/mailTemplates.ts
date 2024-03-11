@@ -1,16 +1,11 @@
 import emailConfig from ".";
 
-const sendEmail = (purpose: string) => {
-    const template =  {
-      forgotPasswordEmail: async (
-            to: string,
-            userName: string,
-            code: string
-        ) =>
-        await emailConfig({
-            to,
-            subject: "Forgot Your Password ?",
-            html: `
+const templates = {
+  forgotPasswordEmail: async (to: string, userName: string, code: string) =>
+    await emailConfig({
+      to,
+      subject: "Forgot Your Password ?",
+      html: `
             <html>
                 <head>
                 </head>
@@ -22,11 +17,25 @@ const sendEmail = (purpose: string) => {
                 </body>
             </html>
         `,
-        })
-    };
+    }),
+};
 
-    // return template["forgotPasswordEmail"]()
-}
+const sendEmail = async (
+  purpose: string,
+  to: string,
+  userName: string,
+  code: string
+) => {
+  switch (purpose) {
+    case "forgotPasswordEmail":
+      await templates.forgotPasswordEmail(to, userName, code);
+      break;
 
+    default:
+      break;
+  }
 
-export default sendEmail
+  return
+};
+
+export default sendEmail;
