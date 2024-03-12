@@ -120,5 +120,5 @@ Authorization: Bearer {{token}}
     "idempotencyKey": "143uhvgwiy2amgf24iwl",
     "productId": "65edd1eabad46656e6f2750a",
     "currency": "NGN",
-    "quantity": 2
+    "quantity": 3
 }
