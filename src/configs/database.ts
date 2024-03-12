@@ -9,7 +9,6 @@ async function connectMongoDb(): Promise<void> {
 
   try {
     await mongoose.connect(appConfig.mongoDbUri, options);
-    console.log("mongodb uri: ", appConfig.mongoDbUri);
     console.log("Database connected");
   } catch (error) {
     console.log("Error connecting to database: " + error);

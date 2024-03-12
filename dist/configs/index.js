@@ -9,7 +9,7 @@ const { env } = process;
 const appConfig = {
     environment: env.NODE_ENV,
     port: env.PORT,
-    mongoDbUri: env.MONGODB_URI,
+    mongoDbUri: env.NODE_ENV === "testing" ? env.MONGODB_URI_TEST : env.MONGODB_URI,
     hashPepper: env.HASH_PEPPER,
     authConfigs: {
         saltRounds: 10,

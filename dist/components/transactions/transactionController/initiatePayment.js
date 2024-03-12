@@ -55,14 +55,24 @@ function initiatePayment(req, res) {
                     status: 400,
                 });
             const amount = (0, currency_js_1.default)(product.price).multiply(quantity).value;
-            //create customer
-            const customer = yield axios_1.default.post("https://api.paystack.co/customer", {
-                email: user.email,
-                first_name: user.firstName,
-                last_name: user.lastName,
-                phone: user.phoneNo,
+            const customerExists = yield axios_1.default.get(`https://api.paystack.co/customer/${user.email}`, {
+                headers: {
+                    Authorization: `Bearer ${paystackSecret}`,
+                },
             });
-            console.log("customer data ", customer.data);
+            if (!customerExists) {
+                const customer = yield axios_1.default.post("https://api.paystack.co/customer", {
+                    email: user.email,
+                    first_name: user.firstName,
+                    last_name: user.lastName,
+                    phone: user.phoneNo,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${paystackSecret}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+            }
             const payload = {
                 email: user.email,
                 amount: `${amount}`,

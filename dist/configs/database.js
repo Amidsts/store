@@ -27,10 +27,6 @@ function connectMongoDb() {
             console.log("Error connecting to database: " + error);
             process.exit(1);
         }
-        // Listen for errors after the initial connection
-        mongoose_1.default.connection.on("error", (error) => {
-            console.log("Database error: " + error);
-        });
     });
 }
 exports.default = connectMongoDb;
