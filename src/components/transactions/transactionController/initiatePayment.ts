@@ -87,7 +87,7 @@ async function initiatePayment(req: IRequest, res: Response) {
 
     const payload = {
       email: user.email,
-      amount: `${amount}`,
+      amount: `${amount}00`,
       currency,
     };
 
