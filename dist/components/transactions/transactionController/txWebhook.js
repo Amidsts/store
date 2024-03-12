@@ -25,9 +25,9 @@ function txWebhookHandler(req, res) {
                 .digest("hex");
             if (hash == req.headers["x-paystack-signature"]) {
                 const { event, data } = req.body;
-                console.log(`Paystack body  ${event} ${data}`);
-                res.send(200);
+                console.log(`Paystack body  ${event} ${data.id}`);
             }
+            res.send(200);
         }
         catch (err) {
             (0, response_1.responseHandler)({
