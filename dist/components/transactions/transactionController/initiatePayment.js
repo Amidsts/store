@@ -75,7 +75,7 @@ function initiatePayment(req, res) {
             }
             const payload = {
                 email: user.email,
-                amount: `${amount}`,
+                amount: `${amount}00`,
                 currency,
             };
             const { data } = yield axios_1.default.post("https://api.paystack.co/transaction/initialize", payload, {
