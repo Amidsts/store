@@ -17,7 +17,7 @@ async function txWebhookHandler(req: IRequest, res: Response) {
       const { event, data } = req.body;
       console.log(`Paystack body  ${event} ${data.id}`);
     }
-    res.send(200);
+    return res.sendStatus(200);
   } catch (err) {
     responseHandler({
       res,
