@@ -2,7 +2,7 @@
 
 # @server = https://store-vifn.onrender.com
 @api = {{server}}/v1
-@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWYiOiI2NWVlYTAxNDU2NDIwOTdjOTAzZGYyYWEiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDEzNzM4MSwiZXhwIjoxNzk2NTM3MzgxLCJhdWQiOiJ3ZWItdXNlciIsImlzcyI6InN0b3JlLWRldmVsb3BtZW50In0.hh307CrVpyjkoynV0Mdbp7b1WPXPjZRN3rMfTf2Ipyk
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWYiOiI2NWVlYTAxNDU2NDIwOTdjOTAzZGYyYWEiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDI0MjYwMiwiZXhwIjoxNzk2NjQyNjAyLCJhdWQiOiJ3ZWItdXNlciIsImlzcyI6InN0b3JlLXByb2R1Y3Rpb24ifQ.ZzKft4rrUXcsBKztkf0-RWcfv_rLVhRu2UhDfP3LOhg
 
 ###
 GET {{server}}
@@ -117,7 +117,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "idempotencyKey": "143uhvgwiy2amgf24iwl",
+    "idempotencyKey": "143uhvgwiy2amgf240#$l",
     "productId": "65edd1eabad46656e6f2750a",
     "currency": "NGN",
     "quantity": 2
