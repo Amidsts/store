@@ -18,7 +18,8 @@ async function deleteProduct(req: IRequest, res: Response) {
     if (!deleteProduct) {
       return responseHandler({
         res,
-        message: "this product does not exist",
+        message: "This product does not exist",
+        status: 400
       });
     }
 

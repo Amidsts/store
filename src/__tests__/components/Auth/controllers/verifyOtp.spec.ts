@@ -9,7 +9,6 @@ import { closeMongoDb } from "../../../../configs/database";
 import AuthModel from "../../../../components/Auth/auth.model";
 import { saveTestData, verifyOtpData } from "../authTestData";
 import OtpModel from "../../../../components/Auth/otp.model";
-import * as sendEmail from "../../../../configs/mail/mailTemplates";
 import * as response from "../../../../utils/response";
 
 describe("reset user password", () => {
@@ -26,6 +25,8 @@ describe("reset user password", () => {
   });
 
   it("Should throw error for wrong email", async () => {
+    const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+    
     const { body, status } = await request(app)
       .post("/v1/auth/verify-otp")
       .send({
@@ -33,6 +34,7 @@ describe("reset user password", () => {
         email: "abcdwsjg@email.com",
       });
 
+      expect(responseHandlerSpy).toHaveBeenCalled();
     expect(body.message).toBe(
       "There was a problem at this time, pls wait some minutes"
     );

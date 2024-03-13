@@ -17,7 +17,6 @@ async function editProduct(req: IRequest, res: Response) {
 
   const { user } = req;
   try {
-
     const product = await ProductModel.findOne({
       _id: productId,
       User: user._id,
@@ -25,19 +24,7 @@ async function editProduct(req: IRequest, res: Response) {
     if (!product) {
       return responseHandler({
         res,
-        message: "this product does not exist",
-      });
-    }
-
-    const duplicateProducts = await ProductModel.find({
-      User: user._id,
-      name,
-      category,
-    });
-    if (duplicateProducts.length > 1) {
-      return responseHandler({
-        res,
-        message: "a product with this name already exist",
+        message: "This product does not exist",
         status: 400,
       });
     }

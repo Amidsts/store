@@ -9,6 +9,7 @@ import ProductModel from "../../Products/product.model";
 import axios from "axios";
 import appConfig from "../../../configs";
 import TxModel from "../transaction.model";
+import { createCustomer, initializePayment } from "../transaction.utils";
 
 async function initiatePayment(req: IRequest, res: Response) {
   const { paystackSecret } = appConfig;
@@ -58,32 +59,8 @@ async function initiatePayment(req: IRequest, res: Response) {
 
     const amount = Currency(product.price).multiply(quantity).value;
 
-    const customerExists = await axios.get(
-      `https://api.paystack.co/customer/${user.email}`,
-      {
-        headers: {
-          Authorization: `Bearer ${paystackSecret}`,
-        },
-      }
-    );
-
-    if (!customerExists) {
-      const customer = await axios.post(
-        "https://api.paystack.co/customer",
-        {
-          email: user.email,
-          first_name: user.firstName,
-          last_name: user.lastName,
-          phone: user.phoneNo,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${paystackSecret}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
+    //create customer
+    await createCustomer(user);
 
     const payload = {
       email: user.email,
@@ -91,16 +68,7 @@ async function initiatePayment(req: IRequest, res: Response) {
       currency,
     };
 
-    const { data } = await axios.post(
-      "https://api.paystack.co/transaction/initialize",
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${paystackSecret}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const data = await initializePayment(payload);
 
     if (data.status) {
       await new TxModel({

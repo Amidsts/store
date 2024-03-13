@@ -21,6 +21,8 @@ describe("resend forgot password otp code", () => {
   });
 
   it("Should throw error for wrong email", async () => {
+    const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+
     const { body, status } = await request(app)
       .post("/v1/auth/forgot-password")
       .send({
@@ -28,6 +30,7 @@ describe("resend forgot password otp code", () => {
         otpPurpose: "reset_password",
       });
 
+    expect(responseHandlerSpy).toHaveBeenCalled();
     expect(body.message).toBe("Invalid login credentials");
     expect(status).toBe(401);
   });

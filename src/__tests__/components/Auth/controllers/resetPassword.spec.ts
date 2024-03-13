@@ -28,10 +28,13 @@ describe("reset user password", () => {
   });
 
   it("Should throw error for wrong email", async () => {
+    const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+
     const { body, status } = await request(app)
       .patch("/v1/auth/reset-password")
       .send(wrongResetPasswordData);
 
+    expect(responseHandlerSpy).toHaveBeenCalled();
     expect(body.message).toBe("Invalid login credentials");
     expect(status).toBe(401);
   });

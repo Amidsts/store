@@ -9,7 +9,7 @@ import { searchProductSchema } from "../product.validators";
 async function searchProduct(req: IRequest, res: Response) {
   const { productId, search }: z.infer<typeof searchProductSchema> = req.query;
 
-  const { paginationOptions, meta } = handlePaginate(req);
+  const { paginationOptions } = handlePaginate(req);
   try {
     if (productId) {
       const product = await ProductModel.findById(productId);
@@ -42,7 +42,6 @@ async function searchProduct(req: IRequest, res: Response) {
         message: "products retrieved successfully",
         data: {
           products,
-          meta,
         },
       });
     }
@@ -54,7 +53,6 @@ async function searchProduct(req: IRequest, res: Response) {
       message: "products retrieved successfully",
       data: {
         products,
-        meta,
       },
     });
   } catch (err) {

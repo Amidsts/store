@@ -23,12 +23,15 @@ describe("user forgot password test", () => {
   });
 
   it("Should throw error for wrong email", async () => {
+    const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+
     const { body, status } = await request(app)
       .post("/v1/auth/forgot-password")
       .send({
         email: wrongTestUserData.email,
       });
 
+    expect(responseHandlerSpy).toHaveBeenCalled();
     expect(body.message).toBe("Invalid login credentials");
     expect(status).toBe(401);
   });
