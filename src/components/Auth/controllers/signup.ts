@@ -36,8 +36,6 @@ async function signUp(req: IRequest, res: Response) {
       phoneNo,
       email,
       password,
-      isVerified: true,
-      role: "user",
     }).save();
 
     return responseHandler({

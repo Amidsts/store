@@ -35,7 +35,7 @@ const sendEmail = async (
       break;
   }
 
-  return
+  return;
 };
 
 export default sendEmail;

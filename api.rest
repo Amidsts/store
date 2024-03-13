@@ -1,6 +1,6 @@
-# @server = http://127.0.0.1:3030
+@server = http://127.0.0.1:3030
 
-@server = https://store-vifn.onrender.com
+# @server = https://store-vifn.onrender.com
 @api = {{server}}/v1
 @token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWYiOiI2NWVlYTAxNDU2NDIwOTdjOTAzZGYyYWEiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDI0MjYwMiwiZXhwIjoxNzk2NjQyNjAyLCJhdWQiOiJ3ZWItdXNlciIsImlzcyI6InN0b3JlLXByb2R1Y3Rpb24ifQ.ZzKft4rrUXcsBKztkf0-RWcfv_rLVhRu2UhDfP3LOhg
 
@@ -14,19 +14,20 @@ POST {{api}}/auth/signup
 Content-Type: application/json
 
 {
-    "firstName": "John",
-    "lastName": "Daoa",
-    "email": "wajix25578@fashlend.com",
+    "firstName": "Jehn",
+    "lastName": "Daa",
+    "email": "oreeyomi@gmail.com",
     "password": "passirdhs",
     "phoneNo": "09066541174"
 }
+
 
 ### sign in
 POST {{api}}/auth/signin
 Content-Type: application/json
 
 {
-    "email": "zuydudedr@gmail.com",
+    "email": "oreeyomi@gmail.com",
     "password": "passirdhs"
 }
 
@@ -35,7 +36,7 @@ POST {{api}}/auth/forgot-password
 Content-Type: application/json
 
 {
-    "email": "wajix25578@fashlend.com"
+    "email": "oreeyomi@gmail.com"
 }
 
 ### verify otp

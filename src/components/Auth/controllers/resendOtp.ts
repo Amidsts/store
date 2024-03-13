@@ -15,7 +15,7 @@ async function resendOtp(req: IRequest, res: Response) {
     if (!user) {
       return responseHandler({
         res,
-        status: 404,
+        status: 401,
         message: "invalid credentials",
       });
     }

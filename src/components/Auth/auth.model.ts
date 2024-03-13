@@ -53,6 +53,7 @@ const authSchema = new Schema<IAuth>(
     role: {
       type: String,
       enum: ["admin", "user"],
+      default: "user",
     },
     acctStatus: {
       type: String,

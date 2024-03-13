@@ -32,7 +32,12 @@ async function forgotPassword(req: IRequest, res: Response) {
     }).save();
 
 
-    await sendEmail("forgotPasswordEmail", existingUser.email,existingUser.fullName, verificationCode );
+    await sendEmail(
+      "forgotPasswordEmail",
+      existingUser.email,
+      existingUser.fullName,
+      verificationCode
+    );
 
     return responseHandler({
       res,

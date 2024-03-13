@@ -1,5 +1,4 @@
 const request = require("supertest");
-import mongoose from "mongoose";
 
 import app, {
   initializeDatabase,
@@ -8,15 +7,7 @@ import app, {
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
 import AuthModel from "../../../../components/Auth/auth.model";
-
-jest.mock("../../../../components/Auth/auth.model", () => ({
-  findOne: jest.fn(),
-}));
-
-jest.mock("mongoose", () => ({
-  connect: jest.fn(),
-  disconnect: jest.fn(),
-}));
+import { saveTestData, testUserData } from "../../../index.spec";
 
 describe("user signup", () => {
   beforeAll(async () => {
@@ -25,46 +16,30 @@ describe("user signup", () => {
     initializeRoutes();
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("Should throw error if user already exist", async () => {
-    const testUser = {
-      _id: "123",
-      firstName: "John",
-      lastName: "Doe",
-      email: "johnna@email.com",
-      password: "123_abc",
-      phoneNo: "09044456788",
-    };
+    await saveTestData().userAuth.save();
 
-    // const AuthModel = "../../../../components/Auth/auth.model";
-    let c = (AuthModel.findOne as jest.Mock).mockReturnValue({
-      _id: "123",
-      firstName: "John",
-      lastName: "Doe",
-      email: "johnna@email.com",
-      password: "123_abc",
-      phoneNo: "09044456788",
-    });
-console.log("c ", c)
-    const { body } = await request(app).post("/v1/auth/signup").send(testUser);
+    const { body, status } = await request(app)
+      .post("/v1/auth/signup")
+      .send(testUserData);
 
-    console.log("body: ", body);
     expect(body.message).toBe("Account already exists,please Login instead");
+    expect(status).toBe(409);
   });
 
-  // it("should create a new user with a success message");
-  // it('should handle "internal server error" for catch error');
+  it("should create a new user with a success message", async () => {
+    await AuthModel.deleteMany();
 
-  it("should return addition answer", async () => {
-    let { status } = await request(app).get("/");
-    expect(1 + 2).toBe(3);
+    const { body, status } = await request(app)
+      .post("/v1/auth/signup")
+      .send(testUserData);
+
+    expect(body.message).toBe("account created, please login");
     expect(status).toBe(200);
   });
 
   afterAll(async () => {
+    await AuthModel.deleteMany();
     await closeMongoDb();
   });
 });

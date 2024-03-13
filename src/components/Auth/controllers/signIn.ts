@@ -35,14 +35,17 @@ async function signIn(req: IRequest, res: Response) {
       },
     });
 
-    return responseHandler({
-      res,
-      message: "Login successful, Welcome 🤗",
-      data: {
-        token,
-        profile: existingUser,
-      },
-    });
+
+delete existingUser.password;
+
+return responseHandler({
+  res,
+  message: "Login successful, Welcome 🤗",
+  data: {
+    token,
+    user: existingUser,
+  },
+});
   } catch (err) {
     responseHandler({
       res,
