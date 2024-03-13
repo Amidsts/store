@@ -13,7 +13,7 @@ import {
   testUserData,
   wrongResetPasswordData,
   wrongTestUserData,
-} from "../../../index.spec";
+} from "../authTestData";
 import OtpModel from "../../../../components/Auth/otp.model";
 import * as sendEmail from "../../../../configs/mail/mailTemplates";
 import * as response from "../../../../utils/response";

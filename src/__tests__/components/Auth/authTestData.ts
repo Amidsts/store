@@ -1,5 +1,5 @@
-import AuthModel from "../components/Auth/auth.model";
-import OtpModel from "../components/Auth/otp.model";
+import AuthModel from "../../../components/Auth/auth.model";
+import OtpModel from "../../../components/Auth/otp.model";
 
 export const testUserData = {
   firstName: "John",
@@ -28,6 +28,12 @@ export const wrongResetPasswordData = {
   confirmPassword: "efghy78",
   code: "abc234",
 };
+
+export const verifyOtpData = (code: string, otpPurpose: string) => ({
+  email: testUserData.email,
+  code,
+  otpPurpose,
+});
 
 export function saveTestData() {
   return {

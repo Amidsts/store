@@ -7,7 +7,7 @@ import app, {
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
 import AuthModel from "../../../../components/Auth/auth.model";
-import { saveTestData, testUserData } from "../../../index.spec";
+import { saveTestData, testUserData } from "../authTestData";
 
 describe("user signup", () => {
   beforeAll(async () => {

@@ -7,11 +7,7 @@ import app, {
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
 import AuthModel, { IAuth } from "../../../../components/Auth/auth.model";
-import {
-  saveTestData,
-  testUserData,
-  wrongTestUserData,
-} from "../../../index.spec";
+import { saveTestData, testUserData, wrongTestUserData } from "../authTestData";
 import OtpModel from "../../../../components/Auth/otp.model";
 import * as sendEmail from "../../../../configs/mail/mailTemplates";
 import * as response from "../../../../utils/response";
