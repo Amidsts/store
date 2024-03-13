@@ -11,6 +11,7 @@ import {
   resetPasswordData,
   saveTestData,
   testUserData,
+  verifyOtpData,
   wrongResetPasswordData,
   wrongTestUserData,
 } from "../authTestData";
@@ -33,11 +34,16 @@ describe("reset user password", () => {
 
   it("Should throw error for wrong email", async () => {
     const { body, status } = await request(app)
-      .post("/v1/auth/reset-password")
-      .send(wrongResetPasswordData);
+      .post("/v1/auth/verify-otp")
+      .send({
+        ...verifyOtpData(resetPasswordOtp.code, "reset_password"),
+        email: "abcdwsjg@email.com",
+      });
 
-    expect(body.message).toBe("Invalid login credentials");
-    expect(status).toBe(401);
+    expect(body.message).toBe(
+      "There was a problem at this time, pls wait some minutes"
+    );
+    expect(status).toBe(404);
   });
 
   it("Should throw error and indicate OTP is not verified", async () => {
@@ -46,12 +52,45 @@ describe("reset user password", () => {
     const responseHandlerSpy = jest.spyOn(response, "responseHandler");
 
     const { body, status } = await request(app)
-      .patch("/v1/auth/reset-password")
-      .send(resetPasswordData(resetPasswordOtp.code));
+      .post("/v1/auth/verify-otp")
+      .send(verifyOtpData("khdbc1", "reset_password"));
 
     expect(responseHandlerSpy).toHaveBeenCalled();
-    expect(body.message).toBe("pls, verify password otp");
+    expect(body.message).toBe("invalid verification code");
+    expect(status).toBe(404);
+  });
+
+  it("Should throw error that otp has expired", async () => {
+    resetPasswordOtp.isVerified = true;
+    resetPasswordOtp.expireAt = new Date(Date.now() - 1000 * 60 * 30);
+    await resetPasswordOtp.save();
+
+    const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+
+    const { body, status } = await request(app)
+      .post("/v1/auth/verify-otp")
+      .send(verifyOtpData(resetPasswordOtp.code, "reset_password"));
+
+    expect(responseHandlerSpy).toHaveBeenCalled();
+    expect(body.message).toBe("OTP has expired");
     expect(status).toBe(400);
+  });
+
+  it("Should indicate that otp verification has been completed", async () => {
+    resetPasswordOtp.expireAt = new Date(Date.now() + 1000 * 60 * 60);
+    await resetPasswordOtp.save();
+
+    const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+
+    const { body, status } = await request(app)
+      .post("/v1/auth/verify-otp")
+      .send(verifyOtpData(resetPasswordOtp.code, "reset_password"));
+
+    expect(responseHandlerSpy).toHaveBeenCalled();
+    expect(body.message).toBe(
+      "otp verification completed, proceed to reset your password"
+    );
+    expect(status).toBe(200);
   });
 
   afterAll(async () => {
