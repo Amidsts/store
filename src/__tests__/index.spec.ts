@@ -15,7 +15,14 @@ export const wrongTestUserData = {
   password: "13$abcn",
 };
 
-export const wrongOtpData = {
+export const resetPasswordData = (code: string) => ({
+  email: testUserData.email,
+  password: "efghy78",
+  confirmPassword: "efghy78",
+  code,
+});
+
+export const wrongResetPasswordData = {
   email: wrongTestUserData.email,
   password: "efghy78",
   confirmPassword: "efghy78",
@@ -28,11 +35,13 @@ export function saveTestData() {
       ...testUserData,
       fullName: `${testUserData.firstName} ${testUserData.lastName}`,
     }),
-    resetPasswordOtp: new OtpModel({
-      User: this.userAuth._id,
-      code: "123abc",
-      expireAt: new Date(Date.now() + 1000 * 60 * 30),
-      purpose: "reset_password",
-    }),
+    resetPasswordOtp: (userId: string) =>
+      new OtpModel({
+        User: userId,
+        code: "123abc",
+        expireAt: new Date(Date.now() + 1000 * 60 * 30),
+        purpose: "reset_password",
+        isVerified: true,
+      }),
   };
 }

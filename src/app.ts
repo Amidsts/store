@@ -4,8 +4,9 @@ import helmet from "helmet";
 
 import connectMongoDb from "./configs/database";
 import { responseHandler } from "./utils/response";
-import v1Routers from "./components/routes"
 import authRouter from "./components/Auth/auth.routes";
+import txRouter from "./components/transactions/transaction.routes";
+import productRouter from "./components/Products/product.routes";
 
 const app: Application = express();
 
@@ -60,8 +61,11 @@ export const initializeMiddlewares = () => {
 };
 
 export const initializeRoutes = () => {
-  // app.use("/v1", v1Routers);
-  app.use("/v1/auth", authRouter);
+  app
+    .use("/v1/auth", authRouter)
+    .use("/v1/tx", txRouter)
+    .use("/v1/product", productRouter);
+
   app.get("/", (req, res) => {
     res.status(200).json({ message: "welcome to The Store" });
   });
