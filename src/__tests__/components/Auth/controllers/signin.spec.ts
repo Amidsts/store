@@ -6,7 +6,7 @@ import app, {
   initializeRoutes,
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
-import AuthModel, { IAuth } from "../../../../components/Auth/auth.model";
+import AuthModel from "../../../../components/Auth/auth.model";
 import { saveTestData, testUserData, wrongTestUserData } from "../authTestData";
 
 describe("user signin", () => {
@@ -16,7 +16,7 @@ describe("user signin", () => {
     initializeMiddlewares();
     initializeRoutes();
 
-    user = await saveTestData();
+    user = await saveTestData().userAuth.save();
   });
 
   it("Should throw error for wrong email", async () => {

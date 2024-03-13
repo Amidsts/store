@@ -6,20 +6,18 @@ import app, {
   initializeRoutes,
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
-import AuthModel, { IAuth } from "../../../../components/Auth/auth.model";
+import AuthModel from "../../../../components/Auth/auth.model";
 import { saveTestData, testUserData, wrongTestUserData } from "../authTestData";
 import OtpModel from "../../../../components/Auth/otp.model";
 import * as sendEmail from "../../../../configs/mail/mailTemplates";
 import * as response from "../../../../utils/response";
 
 describe("resend forgot password otp code", () => {
-  let userAuth: any;
   beforeAll(async () => {
     await initializeDatabase();
     initializeMiddlewares();
     initializeRoutes();
-
-    ({ userAuth } = await saveTestData());
+    await saveTestData().userAuth.save();
   });
 
   it("Should throw error for wrong email", async () => {

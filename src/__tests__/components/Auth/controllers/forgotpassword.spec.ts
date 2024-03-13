@@ -6,7 +6,7 @@ import app, {
   initializeRoutes,
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
-import AuthModel, { IAuth } from "../../../../components/Auth/auth.model";
+import AuthModel from "../../../../components/Auth/auth.model";
 import { saveTestData, testUserData, wrongTestUserData } from "../authTestData";
 import OtpModel from "../../../../components/Auth/otp.model";
 import * as sendEmail from "../../../../configs/mail/mailTemplates";
@@ -19,7 +19,7 @@ describe("user forgot password test", () => {
     initializeMiddlewares();
     initializeRoutes();
 
-    ({ userAuth } = await saveTestData());
+    await saveTestData().userAuth.save();
   });
 
   it("Should throw error for wrong email", async () => {

@@ -6,15 +6,8 @@ import app, {
   initializeRoutes,
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
-import AuthModel, { IAuth } from "../../../../components/Auth/auth.model";
-import {
-  resetPasswordData,
-  saveTestData,
-  testUserData,
-  verifyOtpData,
-  wrongResetPasswordData,
-  wrongTestUserData,
-} from "../authTestData";
+import AuthModel from "../../../../components/Auth/auth.model";
+import { saveTestData, verifyOtpData } from "../authTestData";
 import OtpModel from "../../../../components/Auth/otp.model";
 import * as sendEmail from "../../../../configs/mail/mailTemplates";
 import * as response from "../../../../utils/response";
