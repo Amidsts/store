@@ -7,24 +7,13 @@ import app, {
   initializeRoutes,
 } from "../../../../app";
 import { closeMongoDb } from "../../../../configs/database";
-// import AuthModel from "../../../../components/Auth/auth.model";
-import UserModel from "../../../../components/Users/user.model";
+import AuthModel from "../../../../components/Auth/auth.model";
 
-jest.mock("../../../../components/Users/user.model", () => ({
+jest.mock("../../../../components/Auth/auth.model", () => ({
   findOne: jest.fn(),
 }));
 
-jest.mock("../../../../components/Auth/auth.model", () => ({
-  findOne: jest.fn().mockReturnValue({ session: jest.fn() }),
-}));
-
 jest.mock("mongoose", () => ({
-  startSession: jest.fn().mockReturnValue({
-    startTransaction: jest.fn(),
-    commitTransaction: jest.fn(),
-    abortTransaction: jest.fn(),
-    endSession: jest.fn(),
-  }),
   connect: jest.fn(),
   disconnect: jest.fn(),
 }));
@@ -50,10 +39,16 @@ describe("user signup", () => {
       phoneNo: "09044456788",
     };
 
-    // const session = mongoose.startSession();
-    const findOneMock = jest.fn();
-    UserModel.findOne = findOneMock;
-
+    // const AuthModel = "../../../../components/Auth/auth.model";
+    let c = (AuthModel.findOne as jest.Mock).mockReturnValue({
+      _id: "123",
+      firstName: "John",
+      lastName: "Doe",
+      email: "johnna@email.com",
+      password: "123_abc",
+      phoneNo: "09044456788",
+    });
+console.log("c ", c)
     const { body } = await request(app).post("/v1/auth/signup").send(testUser);
 
     console.log("body: ", body);

@@ -2,8 +2,8 @@ import { NextFunction, Response } from "express";
 
 import { IRequest } from "../utils/types";
 import { responseHandler } from "../utils/response";
-import UserModel from "../components/Users/user.model";
 import UserAuth from "../components/Auth/auth.model";
+import AuthModel from "../components/Auth/auth.model";
 
 const requireAuthMiddleware = async (
   req: IRequest,
@@ -21,7 +21,7 @@ const requireAuthMiddleware = async (
   const { ref, role } = req.decoded;
 
   try {
-    const user = await UserModel.findById(ref);
+    const user = await AuthModel.findById(ref);
     if (!user) {
       return responseHandler({
         res,
@@ -30,19 +30,8 @@ const requireAuthMiddleware = async (
       });
     }
 
-    const userAuth = await UserAuth.findOne({
-      User: user._id,
-    });
-    if (!userAuth) {
-      return responseHandler({
-        res,
-        message: "authorization failed",
-        status: 401,
-      });
-    }
 
     req.user = user;
-    req.userAuth = userAuth;
     req.role = role;
 
     return next();

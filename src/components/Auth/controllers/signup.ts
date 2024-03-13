@@ -2,11 +2,7 @@ import { Response } from "express";
 import { startSession } from "mongoose";
 import { z } from "zod";
 
-import {
-  abortSessionWithResponse,
-  commitSessionWithResponse,
-} from "../../../utils/response";
-import UserModel from "../../Users/user.model";
+import { responseHandler } from "../../../utils/response";
 import { signUpSchema } from "../auth.validators";
 import AuthModel from "../auth.model";
 import { IRequest } from "../../../utils/types";
@@ -20,47 +16,37 @@ async function signUp(req: IRequest, res: Response) {
     phoneNo,
   }: z.infer<typeof signUpSchema> = req.body;
 
-  const session = await startSession();
-  session.startTransaction();
-
   try {
-    const existingUser = await UserModel.findOne({
+    const existingUser = await AuthModel.findOne({
       email,
-    }).session(session);
+    });
 
     if (existingUser) {
-      return abortSessionWithResponse({
+      return responseHandler({
         res,
         message: "Account already exists,please Login instead",
         status: 409,
-        session,
       });
     }
 
-    const newUser = await new UserModel({
+    await new AuthModel({
       firstName,
       lastName,
       fullName: `${firstName} ${lastName}`,
       phoneNo,
       email,
-    }).save({ session });
-
-    await new AuthModel({
-      User: newUser._id,
       password,
       isVerified: true,
       role: "user",
-    }).save({ session });
+    }).save();
 
-    return commitSessionWithResponse({
+    return responseHandler({
       res,
-      session,
       message: "account created, please login",
     });
   } catch (err) {
-    abortSessionWithResponse({
+    responseHandler({
       res,
-      session,
       err,
       message: `Internal Server Error:  ${err.message}`,
       status: 500,

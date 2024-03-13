@@ -4,7 +4,7 @@ import { z } from "zod";
 import { IRequest } from "../../../utils/types";
 import { responseHandler } from "../../../utils/response";
 import { forgotPasswordSchema } from "../auth.validators";
-import UserModel, { OtpModel } from "../../Users/user.model";
+import OtpModel from "../otp.model";
 import AuthModel from "../auth.model";
 import sendEmail from "../../../configs/mail/mailTemplates";
 
@@ -12,7 +12,7 @@ async function forgotPassword(req: IRequest, res: Response) {
   const { email }: z.infer<typeof forgotPasswordSchema> = req.body;
 
   try {
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await AuthModel.findOne({ email });
     if (!existingUser) {
       return responseHandler({
         res,
@@ -21,18 +21,7 @@ async function forgotPassword(req: IRequest, res: Response) {
       });
     }
 
-    const userAuth = await AuthModel.findOne({
-      User: existingUser._id,
-    });
-    if (!userAuth) {
-      return responseHandler({
-        res,
-        status: 401,
-        message: "Invalid login credentials",
-      });
-    }
-
-    const verificationCode = userAuth.randomOTP();
+    const verificationCode = existingUser.randomOTP();
 
     await new OtpModel({
       User: existingUser._id,

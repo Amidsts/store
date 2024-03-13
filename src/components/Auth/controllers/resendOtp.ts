@@ -4,14 +4,14 @@ import { z } from "zod";
 import { IRequest } from "../../../utils/types";
 import { responseHandler } from "../../../utils/response";
 import { resendOtpSchema } from "../auth.validators";
-import UserModel, { OtpModel } from "../../Users/user.model";
+import OtpModel from "../otp.model";
 import AuthModel from "../auth.model";
 import sendEmail from "../../../configs/mail/mailTemplates";
 
 async function resendOtp(req: IRequest, res: Response) {
   const { email, otpPurpose }: z.infer<typeof resendOtpSchema> = req.body;
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await AuthModel.findOne({ email });
     if (!user) {
       return responseHandler({
         res,
@@ -20,16 +20,7 @@ async function resendOtp(req: IRequest, res: Response) {
       });
     }
 
-    const userAuth = await AuthModel.findOne({ User: user._id });
-    if (!userAuth) {
-      return responseHandler({
-        res,
-        message: "invalid credentials",
-        status: 404,
-      });
-    }
-
-    const verificationCode = userAuth.randomOTP();
+    const verificationCode = user.randomOTP();
 
     await new OtpModel({
       User: user._id,

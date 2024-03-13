@@ -9,7 +9,11 @@ import { IToken } from "../../utils/types";
 const { authConfigs, hashPepper } = appConfig;
 
 export interface IAuth extends Document {
-  User: Types.ObjectId;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+  phoneNo: string;
   password: string;
   role: "user" | "admin";
   acctStatus: "active" | "suspended";
@@ -21,7 +25,27 @@ export interface IAuth extends Document {
 
 const authSchema = new Schema<IAuth>(
   {
-    User: { type: Schema.Types.ObjectId, ref: "User" },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    fullName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    phoneNo: {
+      type: String,
+      required: true,
+    },
+
     password: {
       type: String,
       required: true,

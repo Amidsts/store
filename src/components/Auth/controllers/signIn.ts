@@ -2,18 +2,15 @@ import { Response } from "express";
 import { z } from "zod";
 
 import { IRequest } from "../../../utils/types";
-import {
-  responseHandler
-} from "../../../utils/response";
+import { responseHandler } from "../../../utils/response";
 import { signInSchema } from "../auth.validators";
-import UserModel from "../../Users/user.model";
 import AuthModel from "../auth.model";
 
 async function signIn(req: IRequest, res: Response) {
   const { email, password }: z.infer<typeof signInSchema> = req.body;
 
   try {
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await AuthModel.findOne({ email });
 
     if (!existingUser) {
       return responseHandler({
@@ -23,20 +20,7 @@ async function signIn(req: IRequest, res: Response) {
       });
     }
 
-    const userAuth = await AuthModel.findOne({
-      User: existingUser._id,
-    });
-
-    if (!userAuth) {
-      return responseHandler({
-        res,
-        status: 401,
-        message: "Invalid login credentials",
-      });
-    }
-
-    if (!userAuth.comparePassword(password)) {
-
+    if (!existingUser.comparePassword(password)) {
       return responseHandler({
         res,
         message: "Invalid login credentials",
@@ -44,10 +28,10 @@ async function signIn(req: IRequest, res: Response) {
       });
     }
 
-    const token = userAuth.generateToken({
+    const token = existingUser.generateToken({
       data: {
         ref: existingUser._id,
-        role: userAuth.role,
+        role: existingUser.role,
       },
     });
 
