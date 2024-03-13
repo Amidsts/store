@@ -102,7 +102,6 @@ Authorization: Bearer {{token}}
 
 ### delete product
 DELETE {{api}}/product/65edd0dd9d83584a19a8f8e7
-Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### search product

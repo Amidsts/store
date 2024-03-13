@@ -14,6 +14,7 @@ import { paymentData, saveTxTestData } from "../paymentTestData";
 import mongoose from "mongoose";
 import { saveProductTestData } from "../../Products/productTestData";
 import TxModel from "../../../../components/transactions/transaction.model";
+import * as payment from "../../../../components/transactions/transaction.utils";
 
 describe("Initiate payment", () => {
   let user: any, product: any, token: string;
@@ -60,6 +61,8 @@ describe("Initiate payment", () => {
 
   it("Should throw error indicating that 'product is out of stock or quantity is too high'", async () => {
     const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+    product.User = new mongoose.Types.ObjectId()
+    await product.save()
 
     const { body, status } = await request(app)
       .post(`/v1/tx/payment`)
@@ -89,27 +92,32 @@ describe("Initiate payment", () => {
     expect(status).toBe(400);
   });
 
-    it("Should make payment and return a successful response", async () => {
-      await TxModel.deleteMany()
-      const responseHandlerSpy = jest.spyOn(response, "responseHandler");
+  it("Should make payment and return a successful response", async () => {
+    await TxModel.deleteMany();
+    const responseHandlerSpy = jest.spyOn(response, "responseHandler");
 
-      const { body, status } = await request(app)
-        .post(`/v1/tx/payment`)
-        .send(paymentData(String(product._id)))
-        .set("Authorization", `Bearer ${token}`)
-        .set("Content-Type", "application/json");
+    const createCustomerSpy = jest.spyOn(payment, "createCustomer");
+    const initializePaymentSpy = jest.spyOn(payment, "initializePayment");
 
-      expect(responseHandlerSpy).toHaveBeenCalled();
-      expect(body.message).toBe("This payment has already been completed");
-      expect(status).toBe(400);
-    });
+    const { body, status } = await request(app)
+      .post(`/v1/tx/payment`)
+      .send(paymentData(String(product._id)))
+      .set("Authorization", `Bearer ${token}`)
+      .set("Content-Type", "application/json");
+
+    expect(createCustomerSpy).toHaveBeenCalled();
+    expect(initializePaymentSpy).toHaveBeenCalled();
+    expect(responseHandlerSpy).toHaveBeenCalled();
+    expect(body.message).toBe("successful");
+    expect(status).toBe(200);
+  });
 
   afterAll(async () => {
     jest.restoreAllMocks();
 
     await AuthModel.deleteMany();
     await ProductModel.deleteMany();
-    await TxModel.deleteMany()
+    await TxModel.deleteMany();
     await closeMongoDb();
   });
 });

@@ -31,7 +31,7 @@ async function initiatePayment(req: IRequest, res: Response) {
         status: 404,
       });
 
-    if (product.User === user._id)
+    if (String(product.User) === String(user._id))
       return responseHandler({
         res,
         message: "you can not buy your own product",
