@@ -31,7 +31,7 @@ async function signUp(req: IRequest, res: Response) {
     if (existingUser) {
       return abortSessionWithResponse({
         res,
-        message: "Account already exists,please Login instead ",
+        message: "Account already exists,please Login instead",
         status: 409,
         session,
       });

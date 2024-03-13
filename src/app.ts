@@ -5,17 +5,16 @@ import helmet from "helmet";
 import connectMongoDb from "./configs/database";
 import { responseHandler } from "./utils/response";
 import v1Routers from "./components/routes"
+import authRouter from "./components/Auth/auth.routes";
 
 const app: Application = express();
 
-const initializeDatabase = async () => {
+export const initializeDatabase = async () => {
   connectMongoDb().catch((err: any) => console.log(`error: ${err.message}`));
 };
 
-const initializeMiddlewares = () => {
-  const allowedOrigins = [
-    'http://localhost:5173',
-  ];
+export const initializeMiddlewares = () => {
+  const allowedOrigins = ["http://localhost:5173"];
 
   const corsOptions = {
     origin: function (
@@ -57,13 +56,14 @@ const initializeMiddlewares = () => {
       }
 
       return next();
-    })
+    });
 };
 
-const initializeRoutes = () => {
-  app.use("/v1", v1Routers);
+export const initializeRoutes = () => {
+  // app.use("/v1", v1Routers);
+  app.use("/v1/auth", authRouter);
   app.get("/", (req, res) => {
-    res.json({ message: "welcome to The Store" });
+    res.status(200).json({ message: "welcome to The Store" });
   });
 
   app.all("*", (_req, res: Response) =>
@@ -75,8 +75,6 @@ const initializeRoutes = () => {
   );
 };
 
-initializeDatabase();
-initializeMiddlewares();
-initializeRoutes();
+
 
 export default app;
