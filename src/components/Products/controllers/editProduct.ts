@@ -15,11 +15,11 @@ async function editProduct(req: IRequest, res: Response) {
     quantityInStock,
   }: z.infer<typeof editProductSchema> = req.body;
 
-  const { user } = req;
+  const { userAuth } = req;
   try {
     const product = await ProductModel.findOne({
       _id: productId,
-      User: user._id,
+      User: userAuth._id,
     });
     if (!product) {
       return responseHandler({

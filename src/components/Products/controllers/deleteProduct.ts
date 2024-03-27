@@ -6,13 +6,13 @@ import { deleteProductSchema } from "../product.validators";
 import ProductModel from "../product.model";
 
 async function deleteProduct(req: IRequest, res: Response) {
-  const { user } = req;
+  const { userAuth } = req;
   const { productId }: z.infer<typeof deleteProductSchema> = req.params;
 
   try {
     const deleteProduct = await ProductModel.findOneAndDelete({
       _id: productId,
-      User: user._id,
+      User: userAuth._id,
     });
 
     if (!deleteProduct) {

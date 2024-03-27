@@ -14,10 +14,10 @@ async function createProduct(req: IRequest, res: Response) {
     quantityInStock,
   }: z.infer<typeof createProductSchema> = req.body;
 
-  const { user } = req;
+  const { userAuth } = req;
   try {
     const product = await ProductModel.findOne({
-      User: user._id,
+      User:userAuth._id,
       name,
       category,
     });
@@ -31,7 +31,7 @@ async function createProduct(req: IRequest, res: Response) {
     }
 
     const newProduct = await new ProductModel({
-      User: user._id,
+      User: userAuth._id,
       name,
       category,
       description,

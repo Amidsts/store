@@ -13,7 +13,7 @@ import { createCustomer, initializePayment } from "../transaction.utils";
 
 async function initiatePayment(req: IRequest, res: Response) {
   const { paystackSecret } = appConfig;
-  const { user } = req;
+  const { userAuth } = req;
 
   const {
     idempotencyKey,
@@ -31,7 +31,7 @@ async function initiatePayment(req: IRequest, res: Response) {
         status: 404,
       });
 
-    if (String(product.User) === String(user._id))
+    if (String(product.User) === String(userAuth._id))
       return responseHandler({
         res,
         message: "you can not buy your own product",
@@ -60,10 +60,10 @@ async function initiatePayment(req: IRequest, res: Response) {
     const amount = Currency(product.price).multiply(quantity).value;
 
     //create customer
-    await createCustomer(user);
+    await createCustomer(userAuth);
 
     const payload = {
-      email: user.email,
+      email: userAuth.email,
       amount: `${amount}00`,
       currency,
     };
@@ -72,7 +72,7 @@ async function initiatePayment(req: IRequest, res: Response) {
 
     if (data.status) {
       await new TxModel({
-        Buyer: user._id,
+        Buyer: userAuth._id,
         Supplier: product.User,
         idempotencyKey,
         Product: productId,
