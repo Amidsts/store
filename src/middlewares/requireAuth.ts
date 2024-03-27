@@ -31,7 +31,6 @@ const requireAuthMiddleware = async (
     }
 
 
-    req.user = user;
     req.role = role;
 
     return next();
