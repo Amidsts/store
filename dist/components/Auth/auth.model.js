@@ -19,7 +19,26 @@ const node_crypto_1 = require("node:crypto");
 const configs_1 = __importDefault(require("../../configs"));
 const { authConfigs, hashPepper } = configs_1.default;
 const authSchema = new mongoose_1.Schema({
-    User: { type: mongoose_1.Schema.Types.ObjectId, ref: "User" },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
+    },
+    fullName: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    phoneNo: {
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
         required: true,
@@ -27,6 +46,7 @@ const authSchema = new mongoose_1.Schema({
     role: {
         type: String,
         enum: ["admin", "user"],
+        default: "user",
     },
     acctStatus: {
         type: String,

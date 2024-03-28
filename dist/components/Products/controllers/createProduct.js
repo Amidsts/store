@@ -17,10 +17,10 @@ const product_model_1 = __importDefault(require("../product.model"));
 function createProduct(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { name, category, description, price, quantityInStock, } = req.body;
-        const { user } = req;
+        const { userAuth } = req;
         try {
             const product = yield product_model_1.default.findOne({
-                User: user._id,
+                User: userAuth._id,
                 name,
                 category,
             });
@@ -32,7 +32,7 @@ function createProduct(req, res) {
                 });
             }
             const newProduct = yield new product_model_1.default({
-                User: user._id,
+                User: userAuth._id,
                 name,
                 category,
                 description,

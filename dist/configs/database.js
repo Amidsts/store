@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.closeMongoDb = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const _1 = __importDefault(require("."));
 function connectMongoDb() {
@@ -30,4 +31,11 @@ function connectMongoDb() {
     });
 }
 exports.default = connectMongoDb;
+function closeMongoDb() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield mongoose_1.default.disconnect();
+        console.log("Database disconnected");
+    });
+}
+exports.closeMongoDb = closeMongoDb;
 //# sourceMappingURL=database.js.map

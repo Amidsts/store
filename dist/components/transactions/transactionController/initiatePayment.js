@@ -15,13 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const currency_js_1 = __importDefault(require("currency.js"));
 const response_1 = require("../../../utils/response");
 const product_model_1 = __importDefault(require("../../Products/product.model"));
-const axios_1 = __importDefault(require("axios"));
 const configs_1 = __importDefault(require("../../../configs"));
 const transaction_model_1 = __importDefault(require("../transaction.model"));
+const transaction_utils_1 = require("../transaction.utils");
 function initiatePayment(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { paystackSecret } = configs_1.default;
-        const { user } = req;
+        const { userAuth } = req;
         const { idempotencyKey, productId, currency, quantity, } = req.body;
         try {
             const product = yield product_model_1.default.findById(productId);
@@ -31,7 +31,7 @@ function initiatePayment(req, res) {
                     message: "product not found",
                     status: 404,
                 });
-            if (product.User === user._id)
+            if (String(product.User) === String(userAuth._id))
                 return (0, response_1.responseHandler)({
                     res,
                     message: "you can not buy your own product",
@@ -55,38 +55,17 @@ function initiatePayment(req, res) {
                     status: 400,
                 });
             const amount = (0, currency_js_1.default)(product.price).multiply(quantity).value;
-            const customerExists = yield axios_1.default.get(`https://api.paystack.co/customer/${user.email}`, {
-                headers: {
-                    Authorization: `Bearer ${paystackSecret}`,
-                },
-            });
-            if (!customerExists) {
-                const customer = yield axios_1.default.post("https://api.paystack.co/customer", {
-                    email: user.email,
-                    first_name: user.firstName,
-                    last_name: user.lastName,
-                    phone: user.phoneNo,
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${paystackSecret}`,
-                        "Content-Type": "application/json",
-                    },
-                });
-            }
+            //create customer
+            yield (0, transaction_utils_1.createCustomer)(userAuth);
             const payload = {
-                email: user.email,
+                email: userAuth.email,
                 amount: `${amount}00`,
                 currency,
             };
-            const { data } = yield axios_1.default.post("https://api.paystack.co/transaction/initialize", payload, {
-                headers: {
-                    Authorization: `Bearer ${paystackSecret}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            const data = yield (0, transaction_utils_1.initializePayment)(payload);
             if (data.status) {
                 yield new transaction_model_1.default({
-                    Buyer: user._id,
+                    Buyer: userAuth._id,
                     Supplier: product.User,
                     idempotencyKey,
                     Product: productId,

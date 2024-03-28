@@ -32,7 +32,7 @@ exports.resetPasswordSchema = zod_1.default
 });
 exports.resendOtpSchema = zod_1.default.object({
     email: zod_1.default.string().email(),
-    otpPurpose: zod_1.default.string()
+    otpPurpose: zod_1.default.enum(["reset_password"]),
 });
 exports.verifyOtpSchema = zod_1.default.object({
     code: zod_1.default.string().refine((value) => value.length === 6),

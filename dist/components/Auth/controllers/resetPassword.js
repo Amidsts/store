@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,65 +13,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("../../../utils/response");
-const user_model_1 = __importStar(require("../../Users/user.model"));
+const otp_model_1 = __importDefault(require("../otp.model"));
 const auth_model_1 = __importDefault(require("../auth.model"));
-const mongoose_1 = require("mongoose");
 function resetPassword(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { email, confirmPassword, code, } = req.body;
-        const session = yield (0, mongoose_1.startSession)();
-        session.startTransaction();
+        const { email, confirmPassword, code } = req.body;
         try {
-            const existingUser = yield user_model_1.default.findOne({ email }).session(session);
+            const existingUser = yield auth_model_1.default.findOne({ email });
             if (!existingUser) {
-                return (0, response_1.abortSessionWithResponse)({
+                return (0, response_1.responseHandler)({
                     res,
-                    session,
                     status: 401,
                     message: "Invalid login credentials",
                 });
             }
-            const userAuth = yield auth_model_1.default.findOne({
-                User: existingUser._id,
-            }).session(session);
-            if (!userAuth) {
-                return (0, response_1.abortSessionWithResponse)({
-                    res,
-                    session,
-                    status: 401,
-                    message: "Invalid login credentials",
-                });
-            }
-            const otp = yield user_model_1.OtpModel.findOne({
+            const otp = yield otp_model_1.default.findOne({
                 User: existingUser._id,
                 purpose: "reset_password",
                 code,
                 isVerified: true,
-            }).session(session);
+            });
             if (!otp) {
-                return (0, response_1.abortSessionWithResponse)({
+                return (0, response_1.responseHandler)({
                     res,
-                    session,
                     status: 400,
                     message: "pls, verify password otp",
                 });
             }
-            yield user_model_1.OtpModel.deleteMany({
+            yield otp_model_1.default.deleteMany({
                 User: existingUser._id,
-                purpose: "reset-password",
-            }).session(session);
-            userAuth.password = confirmPassword;
-            yield userAuth.save({ session });
-            return (0, response_1.commitSessionWithResponse)({
+                purpose: "reset_password",
+            });
+            existingUser.password = confirmPassword;
+            yield existingUser.save();
+            return (0, response_1.responseHandler)({
                 res,
-                session,
                 message: "password changed successfully, pls log in",
             });
         }
         catch (err) {
-            (0, response_1.abortSessionWithResponse)({
+            (0, response_1.responseHandler)({
                 res,
-                session,
                 err,
                 message: `Internal Server Error:  ${err.message}`,
                 status: 500,

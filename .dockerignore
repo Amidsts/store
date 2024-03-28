@@ -1,0 +1,7 @@
+node_modules
+testcred.txt
+Dockerfile
+docker-compose.yml
+api.rest
+.gitignore
+.env.example

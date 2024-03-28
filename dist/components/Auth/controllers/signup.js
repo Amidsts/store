@@ -12,50 +12,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
 const response_1 = require("../../../utils/response");
-const user_model_1 = __importDefault(require("../../Users/user.model"));
 const auth_model_1 = __importDefault(require("../auth.model"));
 function signUp(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { firstName, lastName, email, password, phoneNo, } = req.body;
-        const session = yield (0, mongoose_1.startSession)();
-        session.startTransaction();
         try {
-            const existingUser = yield user_model_1.default.findOne({
+            const existingUser = yield auth_model_1.default.findOne({
                 email,
-            }).session(session);
+            });
             if (existingUser) {
-                return (0, response_1.abortSessionWithResponse)({
+                return (0, response_1.responseHandler)({
                     res,
-                    message: "Account already exists,please Login instead ",
+                    message: "Account already exists,please Login instead",
                     status: 409,
-                    session,
                 });
             }
-            const newUser = yield new user_model_1.default({
+            yield new auth_model_1.default({
                 firstName,
                 lastName,
                 fullName: `${firstName} ${lastName}`,
                 phoneNo,
                 email,
-            }).save({ session });
-            yield new auth_model_1.default({
-                User: newUser._id,
                 password,
-                isVerified: true,
-                role: "user",
-            }).save({ session });
-            return (0, response_1.commitSessionWithResponse)({
+            }).save();
+            return (0, response_1.responseHandler)({
                 res,
-                session,
                 message: "account created, please login",
             });
         }
         catch (err) {
-            (0, response_1.abortSessionWithResponse)({
+            (0, response_1.responseHandler)({
                 res,
-                session,
                 err,
                 message: `Internal Server Error:  ${err.message}`,
                 status: 500,

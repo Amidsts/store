@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("../utils/response");
-const user_model_1 = __importDefault(require("../components/Users/user.model"));
 const auth_model_1 = __importDefault(require("../components/Auth/auth.model"));
 const requireAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.decoded) {
@@ -25,7 +24,7 @@ const requireAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
     }
     const { ref, role } = req.decoded;
     try {
-        const user = yield user_model_1.default.findById(ref);
+        const user = yield auth_model_1.default.findById(ref);
         if (!user) {
             return (0, response_1.responseHandler)({
                 res,
@@ -33,18 +32,6 @@ const requireAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
                 status: 401,
             });
         }
-        const userAuth = yield auth_model_1.default.findOne({
-            User: user._id,
-        });
-        if (!userAuth) {
-            return (0, response_1.responseHandler)({
-                res,
-                message: "authorization failed",
-                status: 401,
-            });
-        }
-        req.user = user;
-        req.userAuth = userAuth;
         req.role = role;
         return next();
     }

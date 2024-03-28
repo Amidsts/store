@@ -13,13 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("../../../utils/response");
-const user_model_1 = __importDefault(require("../../Users/user.model"));
 const auth_model_1 = __importDefault(require("../auth.model"));
 function signIn(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { email, password } = req.body;
         try {
-            const existingUser = yield user_model_1.default.findOne({ email });
+            const existingUser = yield auth_model_1.default.findOne({ email });
             if (!existingUser) {
                 return (0, response_1.responseHandler)({
                     res,
@@ -27,35 +26,26 @@ function signIn(req, res) {
                     message: "Invalid login credentials",
                 });
             }
-            const userAuth = yield auth_model_1.default.findOne({
-                User: existingUser._id,
-            });
-            if (!userAuth) {
-                return (0, response_1.responseHandler)({
-                    res,
-                    status: 401,
-                    message: "Invalid login credentials",
-                });
-            }
-            if (!userAuth.comparePassword(password)) {
+            if (!existingUser.comparePassword(password)) {
                 return (0, response_1.responseHandler)({
                     res,
                     message: "Invalid login credentials",
                     status: 401,
                 });
             }
-            const token = userAuth.generateToken({
+            const token = existingUser.generateToken({
                 data: {
                     ref: existingUser._id,
-                    role: userAuth.role,
+                    role: existingUser.role,
                 },
             });
+            delete existingUser.password;
             return (0, response_1.responseHandler)({
                 res,
                 message: "Login successful, Welcome 🤗",
                 data: {
                     token,
-                    profile: existingUser,
+                    user: existingUser,
                 },
             });
         }

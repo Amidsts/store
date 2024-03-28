@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,31 +13,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("../../../utils/response");
-const user_model_1 = __importStar(require("../../Users/user.model"));
+const otp_model_1 = __importDefault(require("../otp.model"));
 const auth_model_1 = __importDefault(require("../auth.model"));
 const mailTemplates_1 = __importDefault(require("../../../configs/mail/mailTemplates"));
 function resendOtp(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { email, otpPurpose } = req.body;
         try {
-            const user = yield user_model_1.default.findOne({ email });
+            const user = yield auth_model_1.default.findOne({ email });
             if (!user) {
                 return (0, response_1.responseHandler)({
                     res,
-                    status: 404,
+                    status: 401,
                     message: "invalid credentials",
                 });
             }
-            const userAuth = yield auth_model_1.default.findOne({ User: user._id });
-            if (!userAuth) {
-                return (0, response_1.responseHandler)({
-                    res,
-                    message: "invalid credentials",
-                    status: 404,
-                });
-            }
-            const verificationCode = userAuth.randomOTP();
-            yield new user_model_1.OtpModel({
+            const verificationCode = user.randomOTP();
+            yield new otp_model_1.default({
                 User: user._id,
                 code: verificationCode,
                 expireAt: new Date(Date.now() + 1000 * 60 * 30),

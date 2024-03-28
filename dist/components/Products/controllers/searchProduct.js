@@ -18,7 +18,7 @@ const paginate_1 = __importDefault(require("../../../utils/paginate"));
 function searchProduct(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { productId, search } = req.query;
-        const { paginationOptions, meta } = (0, paginate_1.default)(req);
+        const { paginationOptions } = (0, paginate_1.default)(req);
         try {
             if (productId) {
                 const product = yield product_model_1.default.findById(productId);
@@ -44,7 +44,6 @@ function searchProduct(req, res) {
                     message: "products retrieved successfully",
                     data: {
                         products,
-                        meta,
                     },
                 });
             }
@@ -54,7 +53,6 @@ function searchProduct(req, res) {
                 message: "products retrieved successfully",
                 data: {
                     products,
-                    meta,
                 },
             });
         }

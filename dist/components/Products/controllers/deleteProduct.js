@@ -16,17 +16,18 @@ const response_1 = require("../../../utils/response");
 const product_model_1 = __importDefault(require("../product.model"));
 function deleteProduct(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { user } = req;
+        const { userAuth } = req;
         const { productId } = req.params;
         try {
             const deleteProduct = yield product_model_1.default.findOneAndDelete({
                 _id: productId,
-                User: user._id,
+                User: userAuth._id,
             });
             if (!deleteProduct) {
                 return (0, response_1.responseHandler)({
                     res,
-                    message: "this product does not exist",
+                    message: "This product does not exist",
+                    status: 400
                 });
             }
             return (0, response_1.responseHandler)({

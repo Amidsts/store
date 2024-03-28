@@ -17,27 +17,16 @@ const product_model_1 = __importDefault(require("../product.model"));
 function editProduct(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { productId, name, category, description, price, quantityInStock, } = req.body;
-        const { user } = req;
+        const { userAuth } = req;
         try {
             const product = yield product_model_1.default.findOne({
                 _id: productId,
-                User: user._id,
+                User: userAuth._id,
             });
             if (!product) {
                 return (0, response_1.responseHandler)({
                     res,
-                    message: "this product does not exist",
-                });
-            }
-            const duplicateProducts = yield product_model_1.default.find({
-                User: user._id,
-                name,
-                category,
-            });
-            if (duplicateProducts.length > 1) {
-                return (0, response_1.responseHandler)({
-                    res,
-                    message: "a product with this name already exist",
+                    message: "This product does not exist",
                     status: 400,
                 });
             }
