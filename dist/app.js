@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initializeRoutes = exports.initializeMiddlewares = exports.initializeDatabase = void 0;
-const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const helmet_1 = __importDefault(require("helmet"));
 const database_1 = __importDefault(require("./configs/database"));
@@ -40,7 +39,7 @@ const initializeMiddlewares = () => {
         credentials: true,
     };
     app
-        .use((0, cors_1.default)(corsOptions))
+        // .use(cors(corsOptions))
         .use(express_1.default.json({ limit: "50kb" }))
         .use(express_1.default.urlencoded({ limit: "50kb", extended: false }))
         .use((0, helmet_1.default)())
