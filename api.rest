@@ -1,4 +1,4 @@
-@server = http://127.0.0.1:3030
+@server = http://127.0.0.1:6000
 
 # @server = https://store-vifn.onrender.com
 @api = {{server}}/v1

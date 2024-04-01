@@ -5,3 +5,4 @@ docker-compose.yml
 api.rest
 .gitignore
 .env.example
+.env

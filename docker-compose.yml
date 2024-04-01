@@ -1,0 +1,31 @@
+version: "3"
+services:
+  mongo_db:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongoDb:/data/db
+
+  api:
+    build: .
+    ports:
+      - "6000:6000"
+    volumes:
+      - .:/usr/src/index
+    environment:
+      NODE_ENV: development
+      PORT: 6000
+      MONGODB_URI: mongodb://mongo_db:27017/store
+      HASH_PEPPER: hky2l4t8hdbhm1hsy09_DH7
+      JWT_SECRET: 6FYJGFDKSR2VXGmaaekngsosnhg
+      PAYSTACK_SECRET: sk_test_8a0515c0413f8dfe288c0a6489e88ba41e3f6136
+      MAILGUN_API_KEY: 388a23165318f8f6e0b65116be7e4782-2c441066-9079b2ca
+      MAILGUN_DOMAIN: sandbox1d2434bdae2c495b9951c1302140e41d.mailgun.org
+      APP_EMAIL: <noreply@store-vifn.onrender.com>
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongoDb: {}

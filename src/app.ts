@@ -32,7 +32,7 @@ export const initializeMiddlewares = () => {
   };
 
   app
-    .use(cors(corsOptions))
+    // .use(cors(corsOptions))
     .use(express.json({ limit: "50kb" }))
     .use(express.urlencoded({ limit: "50kb", extended: false }))
     .use(helmet())
@@ -78,7 +78,5 @@ export const initializeRoutes = () => {
     })
   );
 };
-
-
 
 export default app;
