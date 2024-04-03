@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    tools {nodejs "node"}
+
+    environment {
+        NODE_ENV = "production"
+    }
+    stages {
+        stage("clone/checkout the repo") {
+            steps {
+                git clone "https://github.com/Amidsts/store.git"
+            }
+        }
+
+        stage("install dependencies and Build") {
+            steps {
+                sh "npm install"
+                sh "npm run build"
+            }
+        }
+
+        stage("test") {
+            steps {
+                sh "npm run test"
+            }
+        }
+
+        stage("deploy to production") {
+            steps {
+                sh 'echo "deployed to "$NODE_ENV" !!"'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "pipeline successded"
+        }
+
+        failure {
+            echo "pipeline failed"
+        }
+    }
+}

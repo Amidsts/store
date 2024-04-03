@@ -67,7 +67,7 @@ export const initializeRoutes = () => {
     .use("/v1/product", productRouter);
 
   app.get("/", (req, res) => {
-    res.status(200).json({ message: "welcome to The Store" });
+    res.status(200).json({ message: "welcome to The Store.." });
   });
 
   app.all("*", (_req, res: Response) =>
